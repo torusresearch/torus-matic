@@ -39,6 +39,7 @@
   </v-dialog>
 </template>
 <script>
+import { CinemaContract } from "../helpers/web3";
 export default {
   data() {
     return {
@@ -52,14 +53,26 @@ export default {
       this.$emit("toggleMoviesModal");
     },
     async addMovie() {
-      console.log(window.accounts);
-      let result = await window.cinema.methods
-        .addMovie(window.web3.utils.toWei(this.price), this.title)
-        .send({
-          from: window.accounts,
-          gas: "21000"
-        });
+      let cinema = new CinemaContract();
+      let result = await cinema.addMovies(
+        window.web3.utils.toWei(this.price),
+        this.title
+      );
       console.log(result);
+      // let gas = (await window.web3.eth.getBlock("latest")).gasLimit;
+      // await window.cinema.methods
+      //   .addMovie(window.web3.utils.toWei(this.price), this.title)
+      //   .send(
+      //     {
+      //       from: window.accounts,
+      //       gas
+      //     },
+      //     function(error, txHash) {
+      //       console.log(error, txHash);
+      //     }
+      //   );
+      // let movies = await window.cinema.methods._movieIndex().call();
+      // console.log(movies);
     }
   }
 };

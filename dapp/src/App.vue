@@ -36,7 +36,7 @@
 import Torus from "@toruslabs/torus-embed";
 import Matic from "maticjs";
 import Web3 from "web3";
-import Cinema from "./abi/Cinema";
+// import Cinema from "./abi/Cinema";
 import maticJSONData from "./testnet";
 import AddMovie from "./components/AddMovie";
 export default {
@@ -62,9 +62,8 @@ export default {
           buildEnv: "production",
           enableLogging: true,
           network: {
-            host: "matic",
-            // chainId: 8995,
-            networkName: "Matic Alpha-Mainnet"
+            host: "https://testnetv3.matic.network/",
+            networkName: "Matic Testnet v3"
           },
           showTorusButton: false
         });
@@ -77,23 +76,13 @@ export default {
         const maticObj = new Matic({
           maticProvider: torus.provider,
           parentProvider: torus.provider,
-          rootChainAddress: testnetData.Main.Contracts.RootChain,
-          withdrawManagerAddress: testnetData.Main.Contracts.WithdrawManager,
-          depositManagerAddress: testnetData.Main.Contracts.DepositManager,
-          syncerUrl: testnetData.Matic.SyncerAPI,
-          watcherUrl: testnetData.Main.WatcherAPI,
-          maticWethAddress: testnetData.Matic.Contracts.ChildWETH
+          rootChainAddress: testnetData.Main.Contracts.RootChain
         });
         window.maticObj = maticObj;
-        let result = await new web3.eth.Contract(
-          Cinema.abi,
-          "0xdb0b020ab16129983045c80692fa1d1916133471"
-        );
-        window.cinema = result;
-        window.accounts = accounts[0];
         if (accounts[0]) {
           this.isLoggedIn = true;
         }
+        window.account = accounts[0];
       } catch (error) {
         console.log("Error ", error);
       }

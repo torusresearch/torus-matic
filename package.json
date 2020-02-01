@@ -1,53 +1,20 @@
 {
   "name": "torus-matic-dapp",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "## Project setup ``` yarn install ```",
+  "main": "truffle-config.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "@toruslabs/torus-embed": "^0.2.12",
-    "core-js": "^3.4.4",
-    "fast-deep-equal": "^3.1.1",
-    "maticjs": "^1.0.1",
-    "vue": "^2.6.10",
-    "vue-router": "^3.1.5",
-    "vuetify": "^2.1.0",
-    "web3": "^1.0.0-beta.35"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torusresearch/torus-matic.git"
   },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-eslint": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "sass": "^1.19.0",
-    "sass-loader": "^8.0.0",
-    "vue-cli-plugin-vuetify": "^2.0.3",
-    "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.3.0"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/torusresearch/torus-matic/issues"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {
-      "no-console": "off"
-    },
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  "homepage": "https://github.com/torusresearch/torus-matic#readme"
 }
