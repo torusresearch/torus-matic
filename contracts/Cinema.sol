@@ -15,13 +15,13 @@ contract Cinema {
         address customer;
     }
 
-    string public cinemaHouse;
+    address public cinemaHouse;
 
-    uint256 public movieId;
-    uint256 public bookingId;
+    uint256 public movieIndex = 0;
+    uint256 public bookingIndex = 0;
 
     mapping(uint256 => Movie) public movies;
-    mapping(uint256 => Booking) public bookies;
+    mapping(uint256 => Booking) public bookings;
 
     constructor(address _cinemaHouse) public {
         cinemaHouse = _cinemaHouse;
@@ -30,7 +30,7 @@ contract Cinema {
     function addMovie(
         string memory _name,
         string memory _meta,
-        uint256 memory _price,
+        uint256 _price,
         string memory _coverUrl,
         string memory _duration
     ) public {
@@ -43,30 +43,32 @@ contract Cinema {
             _coverUrl,
             _duration
         );
-        movies[movieId] = movie;
+        movies[movieIndex] = movie;
+        movieIndex++;
     }
 
-    function bookTicket(uint256 movieId) public payable {
-        Movie storage movie = movies[movieId];
+    function bookTicket(uint256 _movieId) public payable {
+        Movie storage movie = movies[_movieId];
         require(movie.isEnded == false, "Movie is no longer showing");
         // todo check if movie seats are still remaining
         require(msg.value == movie.price, "Movie price must be same");
 
-        _transferFundToVault(movie.manager, msg.value);
-        _transferTicket(movieId);
+        _transferFundToVault(cinemaHouse, msg.value);
+        _transferTicket(_movieId);
     }
 
-    function setMovieNotShowing(uint256 movieId) public {
+    function setMovieNotShowing(uint256 _movieId) public {
         require(
             msg.sender == cinemaHouse,
             "Only administrator can change this"
         );
-        Movie storage movie = movies[movieId];
+        Movie storage movie = movies[_movieId];
         movie.isEnded = true;
     }
 
-    function _transferTicket(uint256 movieId) internal {
-        bookings[bookingId] = Booking(movieId, msg.sender);
+    function _transferTicket(uint256 _movieId) internal {
+        bookings[bookingIndex] = Booking(_movieId, msg.sender);
+        bookingIndex++;
     }
 
     function _transferFundToVault(address manager, uint256 value) internal {

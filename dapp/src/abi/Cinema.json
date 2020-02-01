@@ -1,73 +1,31 @@
 {
 	"abi": [
 		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "cinema",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "constructor"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "_cinema",
-			"outputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "_movieIndex",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "_ticketIndex",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
 			"constant": false,
 			"inputs": [
 				{
-					"internalType": "uint8",
-					"name": "price",
-					"type": "uint8"
+					"internalType": "string",
+					"name": "_name",
+					"type": "string"
 				},
 				{
 					"internalType": "string",
-					"name": "title",
+					"name": "_meta",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_price",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_coverUrl",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_duration",
 					"type": "string"
 				}
 			],
@@ -82,14 +40,158 @@
 			"inputs": [
 				{
 					"internalType": "uint256",
-					"name": "movieIndex",
+					"name": "_movieId",
 					"type": "uint256"
 				}
 			],
-			"name": "buyTicket",
+			"name": "bookTicket",
 			"outputs": [],
 			"payable": true,
 			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_movieId",
+					"type": "uint256"
+				}
+			],
+			"name": "setMovieNotShowing",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_cinemaHouse",
+					"type": "address"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "bookingIndex",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "bookings",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "movieId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "customer",
+					"type": "address"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "cinemaHouse",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "movieIndex",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "movies",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "meta",
+					"type": "string"
+				},
+				{
+					"internalType": "bool",
+					"name": "isEnded",
+					"type": "bool"
+				},
+				{
+					"internalType": "uint256",
+					"name": "price",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "coverUrl",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "duration",
+					"type": "string"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
 			"type": "function"
 		}
 	]

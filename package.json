@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/torusresearch/torus-matic/issues"
   },
-  "homepage": "https://github.com/torusresearch/torus-matic#readme"
+  "homepage": "https://github.com/torusresearch/torus-matic#readme",
+  "devDependencies": {
+    "truffle": "^5.1.11"
+  }
 }
