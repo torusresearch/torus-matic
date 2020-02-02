@@ -21,6 +21,10 @@
         </v-container>
       </v-card-text>
 
+      <v-card-text class="text-primary font-weight-bold"
+        >You'll pay {{ movie.price * count }} ETH</v-card-text
+      >
+
       <v-card-actions>
         <v-spacer></v-spacer>
 
@@ -28,7 +32,12 @@
           Cancel
         </v-btn>
 
-        <v-btn color="primary darken-1" text @click="bookTicket">
+        <v-btn
+          :disabled="count == 0"
+          color="primary darken-1"
+          text
+          @click="bookTicket"
+        >
           Book Ticket
         </v-btn>
       </v-card-actions>
@@ -40,13 +49,14 @@ import { bookTicket } from "../helpers/web3";
 export default {
   data() {
     return {
-      count: 0
+      count: 1
     };
   },
   props: ["openModal", "movie"],
   methods: {
     closeModal() {
       this.$emit("closeTicket");
+      this.count = 1;
     },
     async bookTicket() {
       await bookTicket(this.movie, this.count);
