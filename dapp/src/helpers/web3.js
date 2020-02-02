@@ -1,42 +1,60 @@
-import Web3 from "web3";
 import Cinema from "../abi/Cinema";
 
-let cinemaAddress = "0x9a8a9958ac1b70c49cce9693ccb0230f13f63505";
+let cinemaAddress = "0xA595122bBBFc3e15b32901971C81FCfC018cDDc7";
 
-export default class Blockchain {
-  async loadContract(address, contract) {
-    try {
-      let web3 = new Web3(window.torus.provider);
-      return await new web3.eth.Contract(contract.abi, address, {
-        gas: 1000000
-      });
-    } catch (error) {
-      return error;
-    }
-  }
-}
+export const bookTicket = async (movie, count) => {
+  let contract = await new window.web3.eth.Contract(Cinema.abi, cinemaAddress);
+  let amountToBePaid = movie.price * count;
+  await contract.methods.bookTicket(movie.movieId).send({
+    from: window.account,
+    value: window.web3.utils.toWei(amountToBePaid.toString(), "ether")
+  });
+};
 
-export class CinemaContract extends Blockchain {
-  constructor() {
-    super();
-    this.contract = this.loadContract(cinemaAddress, Cinema);
-  }
+export const loadMovies = async () => {
+  let contract = await new window.web3.eth.Contract(Cinema.abi, cinemaAddress);
 
-  async addMovies(moviePrice, movieTitle) {
-    let contract = await this.contract;
-    try {
-      return await contract.methods
-        .addMovie(moviePrice, movieTitle)
-        .send({
-          from: window.account
-        })
-        .on("transactionHash", hash => console.log(hash))
-        .on("confirmation", (confirmation, receipt) =>
-          console.log(confirmation, receipt)
-        )
-        .on("receipt", receipt => console.log(receipt));
-    } catch (error) {
-      return error;
-    }
+  let movies = [];
+  let movieId = await contract.methods.movieIndex().call();
+
+  for (let i = 0; i < movieId; i++) {
+    let movie = await contract.methods.movies(i).call();
+    movies.push({
+      movieId: i,
+      title: movie.name,
+      synopsis: movie.meta,
+      isEnded: movie.isEnded,
+      price: window.web3.utils.fromWei(movie.price.toString(), "ether"),
+      coverUrl: movie.coverUrl,
+      duration: movie.duration
+    });
   }
-}
+  return movies;
+};
+
+export const addMovies = async (
+  movieTitle,
+  movieSynopsis,
+  moviePrice,
+  movieCoverUrl,
+  movieDuration
+) => {
+  let contract = await new window.web3.eth.Contract(Cinema.abi, cinemaAddress);
+  return await contract.methods
+    .addMovie(
+      movieTitle,
+      movieSynopsis,
+      window.web3.utils.toWei(moviePrice.toString(), "ether"),
+      movieCoverUrl,
+      movieDuration
+    )
+    .send({
+      from: window.account
+    })
+    .on("transactionHash", hash => hash);
+};
+
+export const getCinemaAddress = async () => {
+  let contract = await new window.web3.eth.Contract(Cinema.abi, cinemaAddress);
+  return contract.methods.cinemaHouse().call();
+};

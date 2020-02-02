@@ -8,10 +8,15 @@
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-btn v-if="isLoggedIn" @click="toggleMoviesModal" text>
-        Add Movies
-      </v-btn>
+      <v-btn
+        router-link
+        :to="{
+          name: 'movies',
+          query: {}
+        }"
+        v-if="isLoggedIn"
+        >Movies</v-btn
+      >
       <v-btn v-if="!isLoggedIn" @click="login" text>
         Login
       </v-btn>
@@ -25,60 +30,58 @@
         <router-view></router-view>
       </v-container>
     </v-content>
-    <add-movie
-      :openNewMoviesModal="showNewMovieModal"
-      @toggleMoviesModal="toggleMoviesModal"
-    />
   </v-app>
 </template>
 
 <script>
-import Torus from "@toruslabs/torus-embed";
+// import Torus from "@toruslabs/torus-embed";
 import Matic from "maticjs";
 import Web3 from "web3";
-// import Cinema from "./abi/Cinema";
 import maticJSONData from "./testnet";
-import AddMovie from "./components/AddMovie";
+// import { getCinemaAddress } from "./helpers/web3";
 export default {
   name: "App",
-  components: {
-    AddMovie
-  },
   data: () => ({
-    isLoggedIn: false,
-    showNewMovieModal: false
+    isLoggedIn: false
+    // isAdmin: false
   }),
-  created() {},
   methods: {
-    toggleMoviesModal() {
-      this.showNewMovieModal = !this.showNewMovieModal;
-    },
     login: async function() {
       try {
-        const torus = new Torus({
-          buttonPosition: "bottom-left"
-        });
-        await torus.init({
-          buildEnv: "production",
-          enableLogging: true,
-          network: {
-            host: "https://testnetv3.matic.network/",
-            networkName: "Matic Testnet v3"
-          },
-          showTorusButton: false
-        });
-        await torus.login();
-        const web3 = new Web3(torus.provider);
-        window.web3 = web3;
-        window.torus = torus;
-        const accounts = await web3.eth.getAccounts();
+        // const torus = new Torus({
+        //   buttonPosition: "bottom-left"
+        // });
+        // await torus.init({
+        //   buildEnv: "production",
+        //   enableLogging: true,
+        //   network: {
+        //     host: "https://testnet2.matic.network/",
+        //     networkName: "Matic Testnet v2"
+        //   },
+        //   showTorusButton: true
+        // });
+        // await torus.login();
+        // const web3 = new Web3(torus.provider);
+        let web3;
+        if (window.ethereum) {
+          web3 = new Web3(window.ethereum);
+          try {
+            // Request account access if needed
+            await window.ethereum.enable();
+          } catch (error) {
+            // User denied account access...
+          }
+        }
         const testnetData = maticJSONData["TestnetV2"];
         const maticObj = new Matic({
-          maticProvider: torus.provider,
-          parentProvider: torus.provider,
+          maticProvider: web3.eth.currentProvider,
+          parentProvider: web3.eth.currentProvider,
           rootChainAddress: testnetData.Main.Contracts.RootChain
         });
+        let accounts = await web3.eth.getAccounts();
         window.maticObj = maticObj;
+        // window.torus = torus;
+        window.web3 = web3;
         if (accounts[0]) {
           this.isLoggedIn = true;
         }
@@ -89,6 +92,7 @@ export default {
     },
     logout: async function() {
       await window.torus.cleanUp();
+      this.$router.replace("/");
       this.isLoggedIn = false;
     }
   }

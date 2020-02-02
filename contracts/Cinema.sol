@@ -17,8 +17,8 @@ contract Cinema {
 
     address public cinemaHouse;
 
-    uint256 public movieIndex = 0;
-    uint256 public bookingIndex = 0;
+    uint256 public movieIndex;
+    uint256 public bookingIndex;
 
     mapping(uint256 => Movie) public movies;
     mapping(uint256 => Booking) public bookings;
@@ -28,42 +28,41 @@ contract Cinema {
     }
 
     function addMovie(
-        string memory _name,
-        string memory _meta,
-        uint256 _price,
-        string memory _coverUrl,
-        string memory _duration
+        string memory name,
+        string memory meta,
+        uint256 price,
+        string memory coverUrl,
+        string memory duration
     ) public {
-        require(msg.sender == cinemaHouse, "Only administrator can add movies");
-        Movie memory movie = Movie(
-            _name,
-            _meta,
-            false,
-            _price,
-            _coverUrl,
-            _duration
-        );
-        movies[movieIndex] = movie;
-        movieIndex++;
+        if (msg.sender == cinemaHouse) {
+            Movie memory movie = Movie(
+                name,
+                meta,
+                false,
+                price,
+                coverUrl,
+                duration
+            );
+            movies[movieIndex] = movie;
+            movieIndex++;
+        }
     }
 
     function bookTicket(uint256 _movieId) public payable {
         Movie storage movie = movies[_movieId];
-        require(movie.isEnded == false, "Movie is no longer showing");
+        if (movie.isEnded == true) return;
         // todo check if movie seats are still remaining
-        require(msg.value == movie.price, "Movie price must be same");
-
-        _transferFundToVault(cinemaHouse, msg.value);
-        _transferTicket(_movieId);
+        if (msg.value == movie.price) {
+            _transferFundToVault(cinemaHouse, msg.value);
+            _transferTicket(_movieId);
+        }
     }
 
     function setMovieNotShowing(uint256 _movieId) public {
-        require(
-            msg.sender == cinemaHouse,
-            "Only administrator can change this"
-        );
-        Movie storage movie = movies[_movieId];
-        movie.isEnded = true;
+        if (msg.sender == cinemaHouse) {
+            Movie storage movie = movies[_movieId];
+            movie.isEnded = true;
+        }
     }
 
     function _transferTicket(uint256 _movieId) internal {

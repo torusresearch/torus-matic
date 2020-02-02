@@ -17,8 +17,25 @@
               <v-text-field
                 v-model="price"
                 label="Price"
-                hint="price in USD"
+                hint="price in ETH"
               ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <v-text-field
+                v-model="cover"
+                label="Cover URL"
+                hint="Link to movie banner"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <v-text-field
+                v-model="duration"
+                label="Duration"
+                hint="in hours"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <v-textarea v-model="synopsis" label="Synopsis"></v-textarea>
             </v-col>
           </v-row>
         </v-container>
@@ -27,11 +44,11 @@
       <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn color="green darken-1" text @click="closeModal">
+        <v-btn color="primary darken-1" text @click="closeModal">
           Cancel
         </v-btn>
 
-        <v-btn color="green darken-1" text @click="addMovie">
+        <v-btn color="primary darken-1" text @click="addMovie">
           Add movie
         </v-btn>
       </v-card-actions>
@@ -39,40 +56,37 @@
   </v-dialog>
 </template>
 <script>
-import { CinemaContract } from "../helpers/web3";
+import { addMovies, loadMovies } from "../helpers/web3";
 export default {
   data() {
     return {
       title: "",
-      price: ""
+      price: "",
+      cover: "",
+      duration: "",
+      synopsis: ""
     };
   },
   props: ["openNewMoviesModal"],
   methods: {
     closeModal() {
       this.$emit("toggleMoviesModal");
+      (this.title = ""),
+        (this.price = ""),
+        (this.cover = ""),
+        (this.duration = ""),
+        (this.synopsis = "");
     },
     async addMovie() {
-      let cinema = new CinemaContract();
-      let result = await cinema.addMovies(
-        window.web3.utils.toWei(this.price),
-        this.title
+      await addMovies(
+        this.title,
+        this.synopsis,
+        this.price,
+        this.cover,
+        this.duration
       );
-      console.log(result);
-      // let gas = (await window.web3.eth.getBlock("latest")).gasLimit;
-      // await window.cinema.methods
-      //   .addMovie(window.web3.utils.toWei(this.price), this.title)
-      //   .send(
-      //     {
-      //       from: window.accounts,
-      //       gas
-      //     },
-      //     function(error, txHash) {
-      //       console.log(error, txHash);
-      //     }
-      //   );
-      // let movies = await window.cinema.methods._movieIndex().call();
-      // console.log(movies);
+      await loadMovies();
+      this.closeModal();
     }
   }
 };

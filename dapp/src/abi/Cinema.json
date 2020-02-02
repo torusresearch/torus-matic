@@ -1,31 +1,43 @@
 {
 	"abi": [
 		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_cinemaHouse",
+					"type": "address"
+				}
+			],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
 			"constant": false,
 			"inputs": [
 				{
 					"internalType": "string",
-					"name": "_name",
+					"name": "name",
 					"type": "string"
 				},
 				{
 					"internalType": "string",
-					"name": "_meta",
+					"name": "meta",
 					"type": "string"
 				},
 				{
 					"internalType": "uint256",
-					"name": "_price",
+					"name": "price",
 					"type": "uint256"
 				},
 				{
 					"internalType": "string",
-					"name": "_coverUrl",
+					"name": "coverUrl",
 					"type": "string"
 				},
 				{
 					"internalType": "string",
-					"name": "_duration",
+					"name": "duration",
 					"type": "string"
 				}
 			],
@@ -49,33 +61,6 @@
 			"payable": true,
 			"stateMutability": "payable",
 			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"internalType": "uint256",
-					"name": "_movieId",
-					"type": "uint256"
-				}
-			],
-			"name": "setMovieNotShowing",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_cinemaHouse",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "constructor"
 		},
 		{
 			"constant": true,
@@ -192,6 +177,21 @@
 			],
 			"payable": false,
 			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_movieId",
+					"type": "uint256"
+				}
+			],
+			"name": "setMovieNotShowing",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]

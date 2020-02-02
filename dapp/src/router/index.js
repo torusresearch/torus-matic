@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Home from "@/components/Home";
 import Movies from "@/components/Movies";
-import Movie from "@/components/Movie";
 
 Vue.use(VueRouter);
 
@@ -9,13 +9,20 @@ export default new VueRouter({
   routes: [
     {
       path: "/",
-      name: "movies",
-      component: Movies
+      name: "home",
+      component: Home
     },
     {
-      path: "/movie/:slug",
-      name: "movie",
-      component: Movie
+      path: "/movies",
+      name: "movies",
+      component: Movies,
+      beforeEnter: (to, from, next) => {
+        if (typeof window.account !== "undefined") {
+          next();
+        } else {
+          next(from.path);
+        }
+      }
     }
   ],
   mode: "history"
