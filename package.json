@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/torusresearch/torus-matic#readme",
   "devDependencies": {
-    "truffle": "^5.1.11"
+    "truffle": "^5.7.9"
   }
 }
